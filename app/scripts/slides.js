@@ -7,8 +7,8 @@ var Helpers = {
   }
 }
 
-var Scene = function(builderfunc) {
-  this.initialize();
+var Scene = function(options, builderfunc) {
+  this.initialize(options);
   builderfunc(this);
 }
 
@@ -17,20 +17,22 @@ Scene.prototype.heading = function(string, params = {}) {
   heading.textContent = string;
 }
 
-Scene.prototype.initialize = function() {
-  this.mainElement = Helpers.createElement("section", "scene", document.querySelector("body"))
+Scene.prototype.initialize = function(options) {
+  this.options = options || {};
+  this.parentElement = options.deckElement || document.querySelector("body");
+  this.mainElement = Helpers.createElement("section", "scene", this.parentElement);
 }
 
-Scene.prototype.addClass = function(klass) {
-  this.mainElement.classList.add(klass);
+Scene.prototype.addClass = function(className) {
+  this.mainElement.classList.add(className);
 }
 
-Scene.prototype.removeClass = function(klass) {
-  this.mainElement.classList.remove(klass);
+Scene.prototype.removeClass = function(className) {
+  this.mainElement.classList.remove(className);
 }
 
-var Deck = function(builderfunc) {
-  this.initialize();
+var Deck = function(options, builderfunc) {
+  this.initialize(options);
   builderfunc(this);
   this.showCurrent();
 
@@ -41,13 +43,17 @@ var Deck = function(builderfunc) {
   });
 }
 
-Deck.prototype.initialize = function() {
+Deck.prototype.initialize = function(options) {
+  this.options = options || {};
   this.scenes = [];
   this.currentScene = 0;
+  let className = options.className || "deck";
+  this.mainElement = Helpers.createElement("main", className, document.querySelector("body"));
 }
 
 Deck.prototype.scene = function(callback) {
-  this.scenes.push(new Scene(callback));
+  let sceneOptions = { deckElement: this.mainElement }
+  this.scenes.push(new Scene(sceneOptions, callback));
 }
 
 Deck.prototype.showCurrent = function() {
@@ -74,7 +80,7 @@ Deck.prototype.showPrevious = function() {
 }
 
 window.onload = function() {
-  new Deck((d) => {
+  new Deck({ className: "first-deck" }, (d) => {
     d.scene((s) => {
       s.heading("test");
     });
