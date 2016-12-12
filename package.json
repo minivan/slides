@@ -1,0 +1,14 @@
+{
+  "name": "slides",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:minivan/slides.git",
+  "author": "Ivan Zarea <zarea.ivan@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "browser-sync": "^2.18.5",
+    "browsersync": "^0.0.1-security",
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.0.0"
+  }
+}
